@@ -31,7 +31,7 @@ public class ScoreController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/scores")
+    @GetMapping("/api/scores")
     public ResponseEntity<Page<Score>> filterScore(@RequestParam(required = false) Long studentId,
                                                    @RequestParam(required = false) Long subjectId,
                                                    Pageable pageable) {
@@ -46,7 +46,7 @@ public class ScoreController {
         }
     }
 
-    @PostMapping("/scores")
+    @PostMapping("/api/scores")
     public ResponseEntity<ScoreDto> saveScore(@Valid @RequestBody ScoreDto scoreDto) {
         Optional<Subject> subjectScore = subjectService.findById(scoreDto.getSubjectId());
         Optional<Student> studentScore = studentService.findById(scoreDto.getStudentId());

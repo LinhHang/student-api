@@ -23,18 +23,18 @@ public class SubjectController {
         this.subjectService = subjectService;
     }
 
-    @GetMapping("/subjects")
+    @GetMapping("/api/subjects")
     public ResponseEntity<Page<SubjectDto>> getAllSubject(Pageable pageable) {
         return new ResponseEntity<>(subjectService.findAll(pageable).map(SubjectDto::new), HttpStatus.OK);
     }
 
-    @GetMapping("/subjects/{subjectId}")
+    @GetMapping("/api/subjects/{subjectId}")
     public ResponseEntity<SubjectDto> getSubjectById(@PathVariable Long subjectId) {
         Optional<Subject> subject = subjectService.findById(subjectId);
         return subject.map(value -> new ResponseEntity<>(new SubjectDto(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/subjects")
+    @PostMapping("/api/subjects")
     public ResponseEntity<SubjectDto> saveSubjectInfo(@Valid @RequestBody SubjectDto subjectDto) {
         if (subjectDto.getId() != null || subjectService.findOneByCode(subjectDto.getCode()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -44,7 +44,7 @@ public class SubjectController {
         }
     }
 
-    @PutMapping("/subjects")
+    @PutMapping("/api/subjects")
     public ResponseEntity<SubjectDto> updateSubjectInfo(@Valid @RequestBody SubjectDto subjectDto) {
         if (subjectDto.getId() == null || !subjectService.findById(subjectDto.getId()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

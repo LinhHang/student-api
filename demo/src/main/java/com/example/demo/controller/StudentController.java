@@ -24,13 +24,12 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping("/students")
+    @GetMapping("/api/students")
     public ResponseEntity<Page<StudentDto>> getAllStudent(Pageable pageable) {
-        System.out.println("Hello Linh");
         return new ResponseEntity<>(studentService.findAll(pageable).map(StudentDto::new), HttpStatus.OK);
     }
 
-    @GetMapping("/students/{studentId}/scores")
+    @GetMapping("/api/students/{studentId}/scores")
     public  ResponseEntity<Object> getStudentCores(@PathVariable Long studentId) {
         Object[] result = {
                 studentId,
@@ -40,14 +39,14 @@ public class StudentController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/api/students/{studentId}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable Long studentId) {
         Optional<Student> student = studentService.findById(studentId);
         return student.map(value -> new ResponseEntity<>(new StudentDto(value), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/students")
+    @PostMapping("/api/students")
     public ResponseEntity<StudentDto> saveStudentInfo(@RequestBody @Valid StudentDto studentDto) {
         if (studentDto.getId() != null || studentService.findOneByEmail(studentDto.getEmail()).isPresent()) {
             throw new ValidationException();
@@ -57,7 +56,7 @@ public class StudentController {
         }
     }
 
-    @PutMapping("/students")
+    @PutMapping("/api/students")
     public ResponseEntity<StudentDto> updateStudentInfo(@RequestBody @Valid StudentDto studentDto) {
         Optional<Student> optionalStudent = studentService.findById(studentDto.getId());
         if (studentDto.getId() == null || !optionalStudent.isPresent()) {
