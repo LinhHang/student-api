@@ -26,6 +26,7 @@ public class StudentController {
 
     @GetMapping("/students")
     public ResponseEntity<Page<StudentDto>> getAllStudent(Pageable pageable) {
+        System.out.println("Hello Linh");
         return new ResponseEntity<>(studentService.findAll(pageable).map(StudentDto::new), HttpStatus.OK);
     }
 
